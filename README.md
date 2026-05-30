@@ -33,8 +33,11 @@ local-rag-pipeline/
 │   └── test_metrics.py  # Automated enterprise compliance, safety, and latency testing suite
 ├── .gitignore           # Prevents tracking runtime caches and local virtual environments
 └── README.md            # Technical system documentation
+```
+---
 
 ## 🚀 Execution & Deployment Workflow
+
 1. Synchronize Local Code to Cluster Node
 To push configuration updates across your local development directory into the active container footprint, use the native Kubernetes file copy path:
 
@@ -52,13 +55,18 @@ Trigger the regression testing harness to verify mathematical keyword grounding,
 
 kubectl exec -it rag-app-deployment-7c64d7d9f9-86zkn -- python src/test_metrics.py
 
+---
+
 ## 📊 Evaluation Metrics & System Telemetry
+
 The system was evaluated using an automated test matrix designed to isolate domain-specific retrieval capabilities against adversarial out-of-bounds queries.
 
 | Regression Test Criteria | Vectorization Latency | Retrieval DB Latency (gRPC) | Time to First Token (TTFT) | Total Generation Window | Guardrail Status |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **1. In-Context Fact Retrieval** | `1630.25 ms` | `216.20 ms` | `16245.13 ms` | `22162.36 ms` | **`✅ PASSED`** (Context Grounded) |
 | **2. Out-of-Bounds Adversarial Request** | `1684.95 ms` | `148.88 ms` | `10510.86 ms` | `11354.23 ms` | **`✅ PASSED`** (Refusal Triggered) |
+
+---
 
 ## Telemetry Insights:
 
