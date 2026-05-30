@@ -34,7 +34,7 @@ local-rag-pipeline/
 ├── .gitignore           # Prevents tracking runtime caches and local virtual environments
 └── README.md            # Technical system documentation
 
-🚀 Execution & Deployment Workflow
+## 🚀 Execution & Deployment Workflow
 1. Synchronize Local Code to Cluster Node
 To push configuration updates across your local development directory into the active container footprint, use the native Kubernetes file copy path:
 
@@ -52,7 +52,7 @@ Trigger the regression testing harness to verify mathematical keyword grounding,
 
 kubectl exec -it rag-app-deployment-7c64d7d9f9-86zkn -- python src/test_metrics.py
 
-📊 Evaluation Metrics & System Telemetry
+## 📊 Evaluation Metrics & System Telemetry
 The system was evaluated using an automated test matrix designed to isolate domain-specific retrieval capabilities against adversarial out-of-bounds queries.
 
 | Regression Test Criteria | Vectorization Latency | Retrieval DB Latency (gRPC) | Time to First Token (TTFT) | Total Generation Window | Guardrail Status |
@@ -60,12 +60,14 @@ The system was evaluated using an automated test matrix designed to isolate doma
 | **1. In-Context Fact Retrieval** | `1630.25 ms` | `216.20 ms` | `16245.13 ms` | `22162.36 ms` | **`✅ PASSED`** (Context Grounded) |
 | **2. Out-of-Bounds Adversarial Request** | `1684.95 ms` | `148.88 ms` | `10510.86 ms` | `11354.23 ms` | **`✅ PASSED`** (Refusal Triggered) |
 
-Telemetry Insights:
+## Telemetry Insights:
+
 Sub-Second Vector Search: Weaviate V4 gRPC binary communication layers process semantic neighbor searches with exceptionally low latency overhead (148ms to 216ms).
 
 Hardware Compute Bounds: The elevated Time-to-First-Token metrics (10.5s to 16.2s) pinpoint a hardware bottleneck: running localized, un-quantized text-generation weights on shared CPU allocations inside a local virtual container engine creates clear thread queuing.
 
-🧠 Engineering Milestones & Debugging History
+## 🧠 Engineering Milestones & Debugging History
+
 gRPC Auto-Schema Resolution: Fixed an explicit runtime query dropout error (Query call with protocol GRPC search failed with message no such prop with name 'title') by deprecating Weaviate auto-generation and declaring strict, typed structures using Property(name="content", data_type=DataType.TEXT) upon collection initialization.
 
 Functional Scope Weight Caching: Eliminated high processing latency penalties by extracting the initialization of HuggingFaceEmbeddings out of the localized request loops and into the global module scope, keeping transformer weight tensors permanently warm in memory.
