@@ -1,0 +1,40 @@
+py -3.12 -m venv venv
+.\venv\Scripts\activate
+python --version
+pip install -r requirements.txt
+
+# 1. Pre-download the LLM locally via Ollama
+& "$env:LOCALAPPDATA\Programs\Ollama\ollama.exe" pull llama3.2:3b
+
+# 2. Extract the Data Payload
+python src/download_data.py
+
+# 3. Compile and Localize Your Docker Container
+docker build -t local-rag-app:v1 .
+
+# 4. Fire Up the Cluster Stack
+kubectl apply -f k8s/rag-stack.yaml
+# Verify the pods are completely up and healthy by running 'kubectl get pods'. Wait until all entries read STATUS: Running
+
+# 5. Execute Ingestion and Database Synchronization
+kubectl exec -it deployment/rag-app-deployment -- python src/ingestion.py
+
+# 6. Generate Vector Semantics
+kubectl exec -it deployment/rag-app-deployment -- python src/indexing.py
+
+# 7. Run the Automated Telemetry and Hallucination Testing Suite
+kubectl exec -it deployment/rag-app-deployment -- python src/test_metrics.py
+
+# 8. Open the Live Interactive Workspace Shell
+kubectl exec -it deployment/rag-app-deployment -- python src/pipeline.py
+
+## Cleaning Everything Up Natively
+
+# 1. Strip deployment structures out of the Kubernetes orchestrator
+kubectl delete -f k8s/rag-stack.yaml
+
+# 2. Free up local Docker engine images cache
+docker rmi local-rag-app:v1
+
+# 3. Clean local system folder structures safely
+rm -r venv

@@ -1,0 +1,24 @@
+1. Domain-Specific In-Context Queries
+These test if your pipeline pulls relevant context from your 216 vectorized physics and computer science records:
+
+"What algorithm is used to obtain a characterization of the family of sparse graphs?" (Targets Doc 002)
+
+"What does the dark matter field fluid model predict for Mars's rotation?" (Targets Doc 003)
+
+"What are partial cubes and what operations are utilized to construct them?" (Targets Doc 010)
+
+2. Corporate Governance / Refusal Boundaries
+These test your strict system prompt constraints ("Answer using ONLY the provided context..."). The pipeline must cleanly refuse to answer these:
+
+"Explain how to design an autonomous drone tracking system using computer vision."
+
+"What are the core differences between a Transformer and a recurrent neural network architecture?"
+
+3. What to Watch for in the Metrics Breakdown:
+When you execute these, watch your terminal printouts closely for performance profiling:
+
+Vectorization Time: Should consistently sit under 0.05s to 0.1s (since all-MiniLM is incredibly lightweight).
+
+Retrieval Database Time: Should be rapid (under 0.02s), proving your Weaviate gRPC/HTTP cluster network routing is healthy.
+
+Time to First Token (TTFT): This will show how quickly your Ollama backend on the docker network initializes its context window and begins processing the text stream.
