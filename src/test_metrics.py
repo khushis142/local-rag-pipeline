@@ -9,13 +9,15 @@ def run_automated_validation_suite():
     test_cases = [
         {
             "name": "In-Context Fact Retrieval",
-            "query": "What are the structural features or foundational components discussed regarding sequence transduction models?",
+            # This query targets Document 003, which is confirmed to be indexed in your 216 records
+            "query": "What is the dark matter field fluid model used to describe, and what does it predict for Mars?",
             "expect_hallucination": False
         },
         {
             "name": "Out-of-Bounds Adversarial Request",
-            "query": "What were Nomura's global net profit margins for the fiscal quarter ending December 2025?",
-            "expect_hallucination": True  # The system should fall back cleanly rather than inventing financials
+            # This cleanly ensures the system falls back when queried completely outside its scientific domain
+            "query": "What were the exact gross revenue margins for global banking entities in Q4 2025?",
+            "expect_hallucination": True  
         }
     ]
     
